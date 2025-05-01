@@ -71,6 +71,7 @@ public class Profile {
     Long profile_id;
 
     //Profile Info
+    @Column(unique = true, length = 255, nullable = true)
     private String bio;
     private String email;
     private String linkedIn_link;

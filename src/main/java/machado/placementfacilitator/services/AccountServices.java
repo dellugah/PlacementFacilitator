@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class accountServices {
+public class AccountServices {
     AccountRepo accountRepo;
     PlacementRepo placementRepo;
     ProfileRepo profileRepo;
 
-    public accountServices(AccountRepo accountRepo, PlacementRepo placementRepo, ProfileRepo profileRepo) {
+    public AccountServices(AccountRepo accountRepo, PlacementRepo placementRepo, ProfileRepo profileRepo) {
         this.accountRepo = accountRepo;
         this.placementRepo = placementRepo;
         this.profileRepo = profileRepo;

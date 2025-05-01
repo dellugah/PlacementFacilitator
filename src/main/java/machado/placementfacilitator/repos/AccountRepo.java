@@ -3,5 +3,10 @@ import machado.placementfacilitator.models.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.util.Optional;
+
 @CrossOrigin
-public interface AccountRepo extends JpaRepository<Account, Long> {}
+public interface AccountRepo extends JpaRepository<Account, Long> {
+
+    Optional<Account> findByUsername(String username);
+}
