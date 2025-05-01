@@ -71,7 +71,7 @@ public class Profile {
     Long profile_id;
 
     //Profile Info
-    @Column(unique = true, length = 255, nullable = true)
+    @Column(unique = true, length = 255)
     private String bio;
     private String email;
     private String linkedIn_link;
@@ -84,9 +84,6 @@ public class Profile {
     private byte[] photo;
 
     //Employer Restricted
-    @OneToMany
-    @JoinColumn(name = "placement_id")
-    private List<Placement> placements;
     private String company_name;
 
     //Student Restricted;

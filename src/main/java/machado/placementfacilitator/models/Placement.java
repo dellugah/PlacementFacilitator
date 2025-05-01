@@ -18,7 +18,9 @@ public class Placement {
 
     private String position_name;
     private String position_description;
-    private List<String> required_skills;
+
+    @Enumerated(EnumType.STRING)
+    private List<Profile.TechnicalSkill> required_skills;
     private int positions_available;
     boolean visible;
 
@@ -26,7 +28,7 @@ public class Placement {
     @JoinTable(
             name = "placement_student",
             joinColumns = @JoinColumn(name = "placement_id"),
-            inverseJoinColumns = @JoinColumn(name = "student_id")
+            inverseJoinColumns = @JoinColumn(name = "profile_id")
     )
     private List<Profile> profiles;
 }

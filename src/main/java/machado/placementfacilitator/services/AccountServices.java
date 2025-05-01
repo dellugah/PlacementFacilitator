@@ -1,10 +1,7 @@
 package machado.placementfacilitator.services;
 
 import machado.placementfacilitator.models.Account;
-import machado.placementfacilitator.models.Profile;
 import machado.placementfacilitator.repos.AccountRepo;
-import machado.placementfacilitator.repos.PlacementRepo;
-import machado.placementfacilitator.repos.ProfileRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,48 +9,18 @@ import java.util.List;
 
 @Service
 public class AccountServices {
-    AccountRepo accountRepo;
-    PlacementRepo placementRepo;
-    ProfileRepo profileRepo;
+    private final AccountRepo accountRepo;
 
-    public AccountServices(AccountRepo accountRepo, PlacementRepo placementRepo, ProfileRepo profileRepo) {
+    public AccountServices(AccountRepo accountRepo) {
         this.accountRepo = accountRepo;
-        this.placementRepo = placementRepo;
-        this.profileRepo = profileRepo;
     }
 
-    public List<Account> findAllAccounts() {
-        return accountRepo.findAll();
-    }
+    public List<Account> allAccounts() {
+        List<Account> users = new ArrayList<>();
 
-    public List<Profile> findAllAdmins() {
-        List<Profile> admins = new ArrayList<>();
-        accountRepo.findAll().forEach(account -> {
-            if(account.getAccount_type() == Account.account_type.ADMIN) {
-                admins.add(account.getProfile());
-            }
-        });
-        return admins;
-    }
+        accountRepo.findAll().forEach(users::add);
 
-    public List<Profile> findAllStudents(){
-        List<Profile> students = new ArrayList<>();
-        accountRepo.findAll().forEach(account -> {
-            if(account.getAccount_type() == Account.account_type.STUDENT) {
-                students.add(account.getProfile());
-            }
-        });
-        return students;
-    }
-
-    public List<Profile> findAllEmployers(){
-        List<Profile> employers = new ArrayList<>();
-        accountRepo.findAll().forEach(account -> {
-            if(account.getAccount_type() == Account.account_type.EMPLOYER) {
-                employers.add(account.getProfile());
-            }
-        });
-        return employers;
+        return users;
     }
 
 }

@@ -17,19 +17,13 @@ import java.util.List;
 @Table(name = "account")
 public class Account implements UserDetails {
 
+    public Account(Profile profile){
+        this.profile = profile;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
-    }
-
-    @Override
-    public String getPassword() {
-        return "";
-    }
-
-    @Override
-    public String getUsername() {
-        return "";
     }
 
     @Override
@@ -58,7 +52,6 @@ public class Account implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
     private Long account_id;
 
     @Column(unique = true)
@@ -68,11 +61,9 @@ public class Account implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private account_type account_type;
 
     @OneToOne
-    @JoinColumn(name = "profile_id", nullable = false, unique = true)
+    @JoinColumn(name = "profile_id", unique = true)
     private Profile profile;
-
 }
