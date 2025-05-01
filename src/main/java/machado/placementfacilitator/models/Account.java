@@ -2,7 +2,9 @@ package machado.placementfacilitator.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -63,7 +65,7 @@ public class Account implements UserDetails {
     private String username;
 
     @Column(nullable = false)
-    private char[] password;
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -72,4 +74,5 @@ public class Account implements UserDetails {
     @OneToOne
     @JoinColumn(name = "profile_id", nullable = false, unique = true)
     private Profile profile;
+
 }

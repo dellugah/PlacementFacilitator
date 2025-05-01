@@ -17,7 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthServices {
+public class JwtService {
     /**
      * Secret key used for JWT token signing and verification
      */
