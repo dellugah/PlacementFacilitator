@@ -1,6 +1,7 @@
 package machado.placementfacilitator.controllers;
 
 import machado.placementfacilitator.models.Account;
+import machado.placementfacilitator.models.Profile;
 import machado.placementfacilitator.services.AccountServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -24,8 +25,9 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<Account> authenticatedAccount() {
+    public ResponseEntity<Profile> authenticatedAccount() {
         Account currentUser = null;
+        Profile profile = null;
         try{
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             currentUser = (Account) authentication.getPrincipal();
@@ -33,8 +35,8 @@ public class UserController {
         }catch (Exception e){
             System.out.println("could not find current user");
         }
-
-        return ResponseEntity.ok(currentUser);
+        profile = currentUser.getProfile();
+        return ResponseEntity.ok(profile);
     }
 
     @GetMapping("/")

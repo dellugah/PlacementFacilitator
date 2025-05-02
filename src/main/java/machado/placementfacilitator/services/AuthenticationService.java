@@ -3,13 +3,18 @@ package machado.placementfacilitator.services;
 import machado.placementfacilitator.DTOs.LoginUserDto;
 import machado.placementfacilitator.DTOs.RegisterUserDto;
 import machado.placementfacilitator.models.Account;
+import machado.placementfacilitator.models.Placement;
 import machado.placementfacilitator.models.Profile;
 import machado.placementfacilitator.repos.AccountRepo;
+import machado.placementfacilitator.repos.PlacementRepo;
 import machado.placementfacilitator.repos.ProfileRepo;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AuthenticationService {
@@ -18,16 +23,18 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final ProfileRepo profileRepo;
+    private final PlacementRepo placementRepo;
 
     public AuthenticationService(
             AccountRepo accountRepo,
             AuthenticationManager authenticationManager,
             PasswordEncoder passwordEncoder,
-            ProfileRepo profileRepo) {
+            ProfileRepo profileRepo, PlacementRepo placementRepo) {
         this.authenticationManager = authenticationManager;
         this.accountRepo = accountRepo;
         this.passwordEncoder = passwordEncoder;
         this.profileRepo = profileRepo;
+        this.placementRepo = placementRepo;
     }
 
 

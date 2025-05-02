@@ -19,16 +19,12 @@ public class Placement {
     private String position_name;
     private String position_description;
 
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private List<Profile.TechnicalSkill> required_skills;
     private int positions_available;
     boolean visible;
 
-    @ManyToMany
-    @JoinTable(
-            name = "placement_student",
-            joinColumns = @JoinColumn(name = "placement_id"),
-            inverseJoinColumns = @JoinColumn(name = "profile_id")
-    )
-    private List<Profile> profiles;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Profile> interestedStudents;
 }

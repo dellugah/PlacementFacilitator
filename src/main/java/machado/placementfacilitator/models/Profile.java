@@ -74,16 +74,18 @@ public class Profile {
     @Column(unique = true, length = 255)
     private String bio;
     private String email;
-    private String linkedIn_link;
-    private String gitHub_link;
+    private String link_one;
+    private String link_two;
 
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private List<TechnicalSkill> skills;
 
     private Boolean domestic;
-    private byte[] photo;
+    private byte[] profile_photo;
 
-    //Employer Restricted
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Placement> placements;
     private String company_name;
 
     //Student Restricted;
@@ -91,7 +93,7 @@ public class Profile {
     private String last_name;
 
     //files
-    private byte[] file; // RESUME OR COMPANY PRE-REQUISITES
+    private byte[] file;
 
 
 
