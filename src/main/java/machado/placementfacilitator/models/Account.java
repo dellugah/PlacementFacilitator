@@ -54,7 +54,7 @@ public class Account implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long account_id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String username;
 
     @Column(nullable = false)

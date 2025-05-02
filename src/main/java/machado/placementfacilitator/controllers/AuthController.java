@@ -21,14 +21,43 @@ public class AuthController {
         this.jwtService = jwtService;
         this.authenticationService = authenticationService;
     }
+    
 
+    /**
+     * Handles user registration (sign-up) requests.
+     * Creates a new user account and generates a JWT token for immediate authentication.
+     *
+     * @param registerUserDto DTO containing user registration information (username, password, etc.)
+     * @return ResponseEntity containing LoginResponse with JWT token and expiration time
+     */
     @PostMapping("/signup")
-    public ResponseEntity<Account> register(@RequestBody RegisterUserDto registerUserDto) {
-        Account registeredAccount = authenticationService.signup(registerUserDto);
-
-        return ResponseEntity.ok(registeredAccount);
+    public ResponseEntity<LoginResponse> register(@RequestBody RegisterUserDto registerUserDto) {
+        if(registerUserDto != null && (registerUserDto.getPassword().length() > 8 || registerUserDto.getUsername().length() > 8)) {
+            try{
+                Account registeredAccount = authenticationService.signup(registerUserDto);
+                String jwtToken = jwtService.generateToken(registeredAccount);
+                LoginResponse loginResponse = new LoginResponse();
+                loginResponse.setToken(jwtToken);
+                loginResponse.setExpiresIn(jwtService.getExpirationTime());
+                return ResponseEntity.ok(loginResponse);
+            }catch (Exception e){
+                return ResponseEntity.badRequest().build();
+            }
+        }
+        else{
+            return ResponseEntity.badRequest().build();
+        }
     }
 
+
+    /**
+     * Handles user authentication (login) requests.
+     * Validates user credentials and generates a JWT token upon successful authentication.
+     *
+     * @param loginUserDto DTO containing user login credentials (username and password)
+     * @return ResponseEntity containing LoginResponse with JWT token and expiration time if authentication successful,
+     * or BadRequest if authentication fails
+     */
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto) {
         System.out.println(loginUserDto);

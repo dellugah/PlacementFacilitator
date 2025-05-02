@@ -26,17 +26,16 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<Profile> authenticatedAccount() {
-        Account currentUser = null;
-        Profile profile = null;
+        Account currentUser;
+        Profile profile;
         try{
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             currentUser = (Account) authentication.getPrincipal();
-            System.out.println("current user: " + currentUser);
+            profile = currentUser.getProfile();
+            return ResponseEntity.ok(profile);
         }catch (Exception e){
-            System.out.println("could not find current user");
+            return ResponseEntity.badRequest().build();
         }
-        profile = currentUser.getProfile();
-        return ResponseEntity.ok(profile);
     }
 
     @GetMapping("/")

@@ -40,15 +40,18 @@ public class AuthenticationService {
 
     //Initializes a new Account
     public Account signup(RegisterUserDto input) {
+        //create an empty profile on the database
         Profile profile = new Profile();
         profile = profileRepo.save(profile);
+
+        //set account credentials with passed account info
+        //TODO Expand account/profile info on first save
         Account account = new Account(profile);
-
-        account.setUsername(input.getUsername());
-        account.setPassword(passwordEncoder.encode(input.getPassword()));
         account.setAccount_type(Account.account_type.valueOf(input.getAccountType()));
+        account.setPassword(passwordEncoder.encode(input.getPassword()));//Encrypt password
+        account.setUsername(input.getUsername());
 
-
+        //save an account onto the database
         return accountRepo.save(account);
     }
 
