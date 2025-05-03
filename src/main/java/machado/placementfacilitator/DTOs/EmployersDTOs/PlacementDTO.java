@@ -1,0 +1,15 @@
+package machado.placementfacilitator.DTOs.EmployersDTOs;
+
+import lombok.Data;
+import machado.placementfacilitator.models.Profile;
+
+import java.util.List;
+
+@Data
+public class PlacementDTO {
+    private String positionName;
+    private String positionDescription;
+    private List<Profile.TechnicalSkill> requiredSkills;
+    private int positionsAvailable;
+    boolean visible;
+}

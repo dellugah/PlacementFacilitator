@@ -34,4 +34,15 @@ public class UserController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    //TODO Edit profile logic
+    @PostMapping("/edit")
+    public ResponseEntity<Boolean> editProfile(){
+        Boolean success = true;
+        if(success){
+            return ResponseEntity.ok(success);
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
 }

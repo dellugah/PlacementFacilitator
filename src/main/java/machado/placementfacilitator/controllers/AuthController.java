@@ -21,7 +21,6 @@ public class AuthController {
         this.jwtService = jwtService;
         this.authenticationService = authenticationService;
     }
-    
 
     /**
      * Handles user registration (sign-up) requests.
@@ -48,7 +47,6 @@ public class AuthController {
             return ResponseEntity.badRequest().build();
         }
     }
-
 
     /**
      * Handles user authentication (login) requests.

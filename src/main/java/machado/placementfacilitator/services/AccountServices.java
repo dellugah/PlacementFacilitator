@@ -17,13 +17,6 @@ public class AccountServices {
         this.accountRepo = accountRepo;
     }
 
-    public List<Account> allAccounts() {
-        List<Account> users = new ArrayList<>();
-        accountRepo.findAll().forEach(users::add);
-
-        return users;
-    }
-
     public List<Profile> findAccountByAccountType(String type) {
         Account.AccountType accountType = Account.AccountType.valueOf(type);
         List<Profile> users = new ArrayList<>();
@@ -41,4 +34,8 @@ public class AccountServices {
         return users;
     }
 
+    public boolean editProfile(long id, Profile profile){
+        //TODO implement edit profile logic
+        return true;
+    }
 }
