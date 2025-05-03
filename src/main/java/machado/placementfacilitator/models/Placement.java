@@ -14,15 +14,15 @@ public class Placement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long placement_id;
+    Long placementId;
 
     private String position_name;
-    private String position_description;
+    private String positionDescription;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    private List<Profile.TechnicalSkill> required_skills;
-    private int positions_available;
+    private List<Profile.TechnicalSkill> requiredSkills;
+    private int positionsAvailable;
     boolean visible;
 
     @OneToMany(fetch = FetchType.EAGER)

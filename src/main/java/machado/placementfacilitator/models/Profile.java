@@ -68,29 +68,30 @@ public class Profile {
     //Database Keys
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long profile_id;
+    Long profileId;
 
     //Profile Info
     @Column(unique = true, length = 255)
     private String bio;
     private String email;
-    private String link_one;
-    private String link_two;
+    private String linkOne;
+    private String linkTwo;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private List<TechnicalSkill> skills;
 
     private Boolean domestic;
-    private byte[] profile_photo;
+    private byte[] profilePhoto;
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<Placement> placements;
-    private String company_name;
+    private String companyName;
 
     //Student Restricted;
-    private String first_name;
-    private String last_name;
+    private String firstName;
+    private String lastName;
+    private boolean visible = true;
 
     //files
     private byte[] file;

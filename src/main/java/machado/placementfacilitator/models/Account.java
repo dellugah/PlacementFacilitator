@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -23,7 +24,7 @@ public class Account implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority("ROLE_" + accountType.name()));
     }
 
     @Override
@@ -46,13 +47,13 @@ public class Account implements UserDetails {
         return UserDetails.super.isEnabled();
     }
 
-    public enum account_type{
+    public enum AccountType{
         ADMIN, STUDENT, EMPLOYER //DO NOT CHANGE ORDER
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long account_id;
+    private Long accountId;
 
     @Column(unique = true, nullable = false)
     private String username;
@@ -61,7 +62,7 @@ public class Account implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private account_type account_type;
+    private AccountType accountType;
 
     @OneToOne
     @JoinColumn(name = "profile_id", unique = true)

@@ -3,7 +3,6 @@ package machado.placementfacilitator.services;
 import machado.placementfacilitator.DTOs.LoginUserDto;
 import machado.placementfacilitator.DTOs.RegisterUserDto;
 import machado.placementfacilitator.models.Account;
-import machado.placementfacilitator.models.Placement;
 import machado.placementfacilitator.models.Profile;
 import machado.placementfacilitator.repos.AccountRepo;
 import machado.placementfacilitator.repos.PlacementRepo;
@@ -23,7 +22,6 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final ProfileRepo profileRepo;
-    private final PlacementRepo placementRepo;
 
     public AuthenticationService(
             AccountRepo accountRepo,
@@ -34,7 +32,6 @@ public class AuthenticationService {
         this.accountRepo = accountRepo;
         this.passwordEncoder = passwordEncoder;
         this.profileRepo = profileRepo;
-        this.placementRepo = placementRepo;
     }
 
 
@@ -47,7 +44,7 @@ public class AuthenticationService {
         //set account credentials with passed account info
         //TODO Expand account/profile info on first save
         Account account = new Account(profile);
-        account.setAccount_type(Account.account_type.valueOf(input.getAccountType()));
+        account.setAccountType(Account.AccountType.valueOf(input.getAccountType()));
         account.setPassword(passwordEncoder.encode(input.getPassword()));//Encrypt password
         account.setUsername(input.getUsername());
 
