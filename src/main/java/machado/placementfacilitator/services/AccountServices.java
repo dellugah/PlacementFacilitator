@@ -34,8 +34,8 @@ public class AccountServices {
         return users;
     }
 
-    public boolean editProfile(long id, Profile profile){
+    public Profile editProfile(long id, Profile profile){
         //TODO implement edit profile logic
-        return true;
+        return profile;
     }
 }

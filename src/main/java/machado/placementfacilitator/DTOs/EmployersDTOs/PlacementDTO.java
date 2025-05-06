@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 public class PlacementDTO {
+    private Long placementId;
     private String positionName;
     private String positionDescription;
     private List<Profile.TechnicalSkill> requiredSkills;

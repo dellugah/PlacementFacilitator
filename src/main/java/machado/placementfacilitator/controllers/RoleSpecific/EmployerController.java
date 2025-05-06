@@ -3,7 +3,6 @@ package machado.placementfacilitator.controllers.RoleSpecific;
 import machado.placementfacilitator.DTOs.EmployersDTOs.AddToPlacementDTO;
 import machado.placementfacilitator.DTOs.EmployersDTOs.PlacementDTO;
 import machado.placementfacilitator.models.Account;
-import machado.placementfacilitator.models.Placement;
 import machado.placementfacilitator.models.Profile;
 import machado.placementfacilitator.services.AccountServices;
 import machado.placementfacilitator.services.EmployerService;
@@ -70,10 +69,7 @@ public class EmployerController {
     @PostMapping("/delete-placement")
     public ResponseEntity<Void> deletePlacement(@RequestBody PlacementDTO placement){
         if(placement != null){
-            Account currentUser;
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            currentUser = (Account) authentication.getPrincipal();
-            employerService.deletePlacement(placement, currentUser.getProfile());
+            employerService.deletePlacement(placement, getAccountProfile());
             return ResponseEntity.ok().build();
         } else{
             return ResponseEntity.badRequest().build();

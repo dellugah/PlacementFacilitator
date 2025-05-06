@@ -11,6 +11,8 @@ import machado.placementfacilitator.repos.PlacementRepo;
 import machado.placementfacilitator.repos.ProfileRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 @Service
 @Slf4j
 @Transactional
@@ -20,13 +22,14 @@ public class EmployerService {
     private final PlacementRepo placementRepo;
 
     public EmployerService(AccountRepo accountRepo,
-                           ProfileRepo profileRepo, PlacementRepo placementRepo) {
+                           ProfileRepo profileRepo,
+                           PlacementRepo placementRepo) {
         this.accountRepo = accountRepo;
         this.profileRepo = profileRepo;
         this.placementRepo = placementRepo;
     }
 
-    public boolean addStudentToPlacement(Long studentId, Long placementId) {
+    public Profile addStudentToPlacement(Long studentId, Long placementId) {
         try {
             Profile student = profileRepo.findById(studentId)
                     .orElseThrow(() -> new IllegalArgumentException("Student not found"));
@@ -42,24 +45,21 @@ public class EmployerService {
                     .orElseThrow(() -> new IllegalArgumentException("Placement not found"));
 
             if (placement.getPotentialCandidates().contains(student)) {
-                log.debug("Student {} is already in this placement {}", studentId, placementId);
-                return false;
+                throw new IllegalArgumentException("Student already on this placement list");
             }
 
             placement.getPotentialCandidates().add(student);
             placementRepo.save(placement);
-
-            log.debug("Successfully added student {} to placement {}", studentId, placementId);
-            return true;
+            log.info("Added student {} to placement {}", studentId, placementId);
+            return student;
 
         } catch (Exception e) {
-            log.error("Failed to add student {} to placement {}: {}",
-                    studentId, placementId, e.getMessage());
-            return false;
+            throw new IllegalArgumentException("Failed to add Student to Placement");
         }
+
     }
 
-    public void createPlacement(Profile profile, PlacementDTO placementDTO) {
+    public Placement createPlacement(Profile profile, PlacementDTO placementDTO) {
         // Validate inputs
         if (profile == null || placementDTO == null) {
             throw new IllegalArgumentException("Profile and placement details are required");
@@ -88,25 +88,29 @@ public class EmployerService {
         placementRepo.save(placement);
         profileRepo.save(profile);
 
-        log.info("Created new placement: {} for profile: {}",
-                placementDTO.getPositionName(), profile.getProfileId());
+        log.info("Created new placement: {} for profile: {}", placementDTO.getPositionName(), profile.getProfileId());
+        return placement;
     }
 
-    public void editPlacement(PlacementDTO placement, Profile profile){
-        profile.getPlacements().forEach(p ->{
-            if(p.getPositionName().equals(placement.getPositionName())){
-                p.setPositionName(placement.getPositionName());
-                p.setRequiredSkills(placement.getRequiredSkills());
-                p.setPositionDescription(placement.getPositionDescription());
-                p.setPositionsAvailable(placement.getPositionsAvailable());
-                p.setVisible(placement.isVisible());
-                placementRepo.save(p);
-                profileRepo.save(profile);
-                log.debug("Successfully edited placement {}", placement.getPositionName());
-                return;
-            }
-        });
-        log.debug("Placement {} not found", placement.getPositionName());
+    public Placement editPlacement(PlacementDTO placement, Profile profile){
+        try{
+            AtomicReference<Placement> editedPlacement = new AtomicReference<>();
+            profile.getPlacements().forEach(p -> {
+                if (p.getPlacementId().equals(placement.getPlacementId())) {
+                    p.setPositionName(placement.getPositionName());
+                    p.setRequiredSkills(placement.getRequiredSkills());
+                    p.setPositionDescription(placement.getPositionDescription());
+                    p.setPositionsAvailable(placement.getPositionsAvailable());
+                    p.setVisible(placement.isVisible());
+                    placementRepo.save(p);
+                    log.debug("Successfully edited placement {}", placement.getPositionName());
+                }
+            });
+            return editedPlacement.get();
+
+        } catch (Exception e){
+            throw new IllegalArgumentException("Failed to edit placement");
+        }
     }
 
     public void deletePlacement(PlacementDTO placement, Profile profile){

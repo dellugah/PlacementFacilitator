@@ -38,6 +38,12 @@ public class AuthController {
                 LoginResponse loginResponse = new LoginResponse();
                 loginResponse.setToken(jwtToken);
                 loginResponse.setExpiresIn(jwtService.getExpirationTime());
+                switch (registerUserDto.getAccountType()){
+                    case "STUDENT": loginResponse.setHomePage("/student"); break;
+                    case "EMPLOYER": loginResponse.setHomePage("/employer"); break;
+                    case "ADMIN": loginResponse.setHomePage("/admin"); break;
+                    default: return ResponseEntity.badRequest().build();
+                }
                 return ResponseEntity.ok(loginResponse);
             }catch (Exception e){
                 return ResponseEntity.badRequest().build();
@@ -71,5 +77,10 @@ public class AuthController {
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
 
         return ResponseEntity.ok(loginResponse);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<Void> logout(){
+        return ResponseEntity.ok().build();
     }
 }

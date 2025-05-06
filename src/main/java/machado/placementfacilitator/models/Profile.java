@@ -1,10 +1,11 @@
 package machado.placementfacilitator.models;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -69,6 +70,7 @@ public class Profile {
     //Database Keys
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     Long profileId;
 
     //Profile Info

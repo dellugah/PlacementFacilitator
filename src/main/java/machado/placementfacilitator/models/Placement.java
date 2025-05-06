@@ -1,8 +1,10 @@
 package machado.placementfacilitator.models;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CollectionId;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class Placement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     Long placementId;
 
     @Column(name = "position_name", nullable = false)
