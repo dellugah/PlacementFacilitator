@@ -9,5 +9,20 @@ public class RegisterUserDto {
 
     private String password;
 
+    //Student Restricted;
+    private String firstName;
+    private String lastName;
+
+    //Employer Restricted
+    private String companyName;
+
+    private String email;
+
     private String accountType;
+
+
+
+
+
+
 }

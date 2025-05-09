@@ -31,7 +31,8 @@ public class AuthController {
      */
     @PostMapping("/signup")
     public ResponseEntity<LoginResponse> register(@RequestBody RegisterUserDto registerUserDto) {
-        if(registerUserDto != null && (registerUserDto.getPassword().length() > 8 || registerUserDto.getUsername().length() > 8)) {
+        System.out.println(registerUserDto);
+        if(registerUserDto != null && (registerUserDto.getPassword().length() >= 8 || registerUserDto.getUsername().length() >= 8)) {
             try{
                 Account registeredAccount = authenticationService.signup(registerUserDto);
                 String jwtToken = jwtService.generateToken(registeredAccount);
@@ -39,9 +40,9 @@ public class AuthController {
                 loginResponse.setToken(jwtToken);
                 loginResponse.setExpiresIn(jwtService.getExpirationTime());
                 switch (registerUserDto.getAccountType()){
-                    case "STUDENT": loginResponse.setHomePage("/student"); break;
-                    case "EMPLOYER": loginResponse.setHomePage("/employer"); break;
-                    case "ADMIN": loginResponse.setHomePage("/admin"); break;
+                    case "STUDENT": loginResponse.setHomePage("student"); break;
+                    case "EMPLOYER": loginResponse.setHomePage("employer"); break;
+                    case "ADMIN": loginResponse.setHomePage("adminInterface"); break;
                     default: return ResponseEntity.badRequest().build();
                 }
                 return ResponseEntity.ok(loginResponse);
@@ -76,6 +77,12 @@ public class AuthController {
         loginResponse.setToken(jwtToken);
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
 
+        switch (authenticatedUser.getAccountType().toString()){
+            case "STUDENT": loginResponse.setHomePage("/student"); break;
+            case "EMPLOYER": loginResponse.setHomePage("/employer"); break;
+            case "ADMIN": loginResponse.setHomePage("/admin-interface"); break;
+            default: return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok(loginResponse);
     }
 

@@ -37,15 +37,26 @@ public class AuthenticationService {
         //create an empty profile on the database
         Profile profile = new Profile();
         profile = profileRepo.save(profile);
-
         //set account credentials with passed account info
         //TODO Expand account/profile info on first save
         Account account = new Account(profile);
         account.setAccountType(Account.AccountType.valueOf(input.getAccountType()));
         account.setPassword(passwordEncoder.encode(input.getPassword()));//Encrypt password
         account.setUsername(input.getUsername());
+        profile.setVisible(true);
+        if(input.getAccountType().equals("EMPLOYER")){
+            profile.setCompanyName(input.getCompanyName());
+        }else{
+            profile.setFirstName(input.getFirstName());
+            profile.setLastName(input.getLastName());
+        }
+
+        profile.setEmail(input.getEmail());
+
+
 
         //save an account onto the database
+        profileRepo.save(profile);
         return accountRepo.save(account);
     }
 
