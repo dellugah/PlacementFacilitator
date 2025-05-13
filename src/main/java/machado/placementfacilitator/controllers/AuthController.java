@@ -22,6 +22,11 @@ public class AuthController {
         this.authenticationService = authenticationService;
     }
 
+    @GetMapping("/test")
+    public String test(){
+        return "auth";
+    }
+
     /**
      * Handles user registration (sign-up) requests.
      * Creates a new user account and generates a JWT token for immediate authentication.
