@@ -61,7 +61,9 @@ public class EmployerService {
 
     public Placement createPlacement(Profile profile, PlacementDTO placementDTO) {
         // Validate inputs
+        System.out.println(">>> incerting placement: " + placementDTO.getPositionName() + " for profile: " + profile.getProfileId() + " <<<");
         if (profile == null || placementDTO == null) {
+            log.error("Profile and placement details are required");
             throw new IllegalArgumentException("Profile and placement details are required");
         }
 
@@ -75,6 +77,7 @@ public class EmployerService {
             );
         }
 
+        System.out.println(">>> creating... <<<");
         // Create and populate new placement
         Placement placement = new Placement();
         placement.setPositionName(placementDTO.getPositionName());
@@ -83,11 +86,18 @@ public class EmployerService {
         placement.setPositionsAvailable(placementDTO.getPositionsAvailable());
         placement.setVisible(placementDTO.isVisible());
 
+        System.out.println(">>> created! <<<");
         // Add placement to profile and save
-        profile.getPlacements().add(placement);
+        System.out.println(">>> inserting... <<<");
+        System.out.println(">>> Step 1<<<");
         placementRepo.save(placement);
-        profileRepo.save(profile);
 
+        System.out.println(">>> Step 2<<<");
+        profile.getPlacements().add(placement);
+
+        System.out.println(">>> Step 3<<<");
+        profileRepo.save(profile);
+        System.out.println(">>> Inserted... <<<");
         log.info("Created new placement: {} for profile: {}", placementDTO.getPositionName(), profile.getProfileId());
         return placement;
     }
@@ -114,10 +124,13 @@ public class EmployerService {
     }
 
     public void deletePlacement(PlacementDTO placement, Profile profile){
+        System.out.println(">>> deleting... <<<");
         profile.getPlacements().forEach(p ->{
-            if(p.getPositionName().equals(placement.getPositionName())){
-                placementRepo.delete(p);
-                profileRepo.save(profile);
+            if(p.getPlacementId().equals(placement.getPlacementId())){
+                System.out.println("Deleting placement: " + placement.getPositionName());
+                placementRepo.deletePotentialCandidatesRelationships(p.getPlacementId());
+                placementRepo.deleteProfilePlacementsRelationships(p.getPlacementId());
+                placementRepo.deleteById(p.getPlacementId());
                 log.debug("Successfully deleted placement {}", placement.getPositionName());
                 return;
             }

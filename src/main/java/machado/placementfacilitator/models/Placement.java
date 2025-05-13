@@ -37,7 +37,7 @@ public class Placement {
     @Column(name = "visible")
     boolean visible;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "potential_candidates",
             joinColumns = @JoinColumn(name = "placement_id"),

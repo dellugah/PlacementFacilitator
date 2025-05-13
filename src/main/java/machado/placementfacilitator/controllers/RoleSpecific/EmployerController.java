@@ -47,6 +47,7 @@ public class EmployerController {
 
     @PostMapping("/create-placement")
     public ResponseEntity<Void> createPlacement(@RequestBody PlacementDTO placementDTO){
+        System.out.println(placementDTO);
         try{
             employerService.createPlacement(getAccountProfile(), placementDTO);
         }catch (Exception e){
@@ -69,6 +70,7 @@ public class EmployerController {
     @PostMapping("/delete-placement")
     public ResponseEntity<Void> deletePlacement(@RequestBody PlacementDTO placement){
         if(placement != null){
+            System.out.println(placement);
             employerService.deletePlacement(placement, getAccountProfile());
             return ResponseEntity.ok().build();
         } else{
@@ -77,9 +79,11 @@ public class EmployerController {
     }
 
     private Profile getAccountProfile(){
+        System.out.println(">>> authenticating");
         Account currentUser;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         currentUser = (Account) authentication.getPrincipal();
+        System.out.println(">>> authenticated");
         return currentUser.getProfile();
     }
 }

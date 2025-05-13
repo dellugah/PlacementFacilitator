@@ -10,7 +10,7 @@ public class PlacementDTO {
     private Long placementId;
     private String positionName;
     private String positionDescription;
-    private List<Profile.TechnicalSkill> requiredSkills;
     private int positionsAvailable;
+    private List<Profile.TechnicalSkill> requiredSkills;
     boolean visible;
 }
