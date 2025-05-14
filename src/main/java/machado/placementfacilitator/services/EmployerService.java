@@ -11,6 +11,7 @@ import machado.placementfacilitator.repos.PlacementRepo;
 import machado.placementfacilitator.repos.ProfileRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -27,6 +28,21 @@ public class EmployerService {
         this.accountRepo = accountRepo;
         this.profileRepo = profileRepo;
         this.placementRepo = placementRepo;
+    }
+    public List<Profile> getAllStudents() {
+        try {
+            List<Account> accountlist = accountRepo.findAllByAccountType(Account.AccountType.STUDENT)
+                    .orElse(null);
+            if (accountlist == null) {
+                throw new IllegalArgumentException("No students found");
+            }
+            return accountlist.stream()
+                    .map(Account::getProfile)
+                    .toList();
+
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Failed to retrieve all students");
+        }
     }
 
     public Profile addStudentToPlacement(Long studentId, Long placementId) {

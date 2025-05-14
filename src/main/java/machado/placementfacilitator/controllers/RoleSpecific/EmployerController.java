@@ -26,9 +26,9 @@ public class EmployerController {
     }
 
     @GetMapping("/students")
-    public ResponseEntity<List<Profile>> allStudents(@RequestBody String type) {
+    public ResponseEntity<List<Profile>> allStudents() {
         try{
-            List<Profile> users = accountService.findAccountByAccountType(type);
+            List<Profile> users = employerService.getAllStudents();
             return ResponseEntity.ok(users);
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
