@@ -1,7 +1,7 @@
 package machado.placementfacilitator.services;
 
-import machado.placementfacilitator.DTOs.LoginUserDto;
-import machado.placementfacilitator.DTOs.RegisterUserDto;
+import machado.placementfacilitator.DTOs.LoginUserDTO;
+import machado.placementfacilitator.DTOs.RegisterUserDTO;
 import machado.placementfacilitator.models.Account;
 import machado.placementfacilitator.models.Profile;
 import machado.placementfacilitator.repos.AccountRepo;
@@ -33,7 +33,7 @@ public class AuthenticationService {
 
 
     //Initializes a new Account
-    public Account signup(RegisterUserDto input) {
+    public Account signup(RegisterUserDTO input) {
         //create an empty profile on the database
         Profile profile = new Profile();
         profile = profileRepo.save(profile);
@@ -61,7 +61,7 @@ public class AuthenticationService {
     }
 
     //Authenticate Account
-    public Account authenticate(LoginUserDto input) {
+    public Account authenticate(LoginUserDTO input) {
         try{
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(

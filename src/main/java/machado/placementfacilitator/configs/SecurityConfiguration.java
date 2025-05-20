@@ -40,6 +40,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/student/**").hasAnyRole("STUDENT", "ADMIN")
                         .requestMatchers("/api/employer/**").hasAnyRole("EMPLOYER", "ADMIN")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/generic/**").hasAnyRole("STUDENT", "EMPLOYER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

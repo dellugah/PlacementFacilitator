@@ -3,7 +3,7 @@ package machado.placementfacilitator.DTOs;
 import lombok.Data;
 
 @Data
-public class RegisterUserDto {
+public class RegisterUserDTO {
 
     private String username;
 

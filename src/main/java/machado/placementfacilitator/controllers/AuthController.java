@@ -3,8 +3,8 @@ package machado.placementfacilitator.controllers;
 import machado.placementfacilitator.DTOs.LoginResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import machado.placementfacilitator.DTOs.LoginUserDto;
-import machado.placementfacilitator.DTOs.RegisterUserDto;
+import machado.placementfacilitator.DTOs.LoginUserDTO;
+import machado.placementfacilitator.DTOs.RegisterUserDTO;
 import machado.placementfacilitator.models.Account;
 import machado.placementfacilitator.services.AuthenticationService;
 import machado.placementfacilitator.services.JwtService;
@@ -35,7 +35,7 @@ public class AuthController {
      * @return ResponseEntity containing LoginResponse with JWT token and expiration time
      */
     @PostMapping("/signup")
-    public ResponseEntity<LoginResponse> register(@RequestBody RegisterUserDto registerUserDto) {
+    public ResponseEntity<LoginResponse> register(@RequestBody RegisterUserDTO registerUserDto) {
         System.out.println(registerUserDto);
         if(registerUserDto != null && (registerUserDto.getPassword().length() >= 8 || registerUserDto.getUsername().length() >= 8)) {
             try{
@@ -69,7 +69,7 @@ public class AuthController {
      * or BadRequest if authentication fails
      */
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto) {
+    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDTO loginUserDto) {
         System.out.println(loginUserDto);
         Account authenticatedUser = authenticationService.authenticate(loginUserDto);
 
