@@ -6,6 +6,8 @@ import machado.placementfacilitator.models.Account;
 import machado.placementfacilitator.models.Profile;
 import machado.placementfacilitator.repos.AccountRepo;
 import machado.placementfacilitator.repos.ProfileRepo;
+import org.apache.coyote.Response;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -61,8 +63,9 @@ public class AuthenticationService {
     }
 
     //Authenticate Account
-    public Account authenticate(LoginUserDTO input) {
+    public ResponseEntity<Account> authenticate(LoginUserDTO input) {
         try{
+            System.out.println("Authenticating");
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             input.getUsername(),
@@ -70,11 +73,12 @@ public class AuthenticationService {
                     )
             );
             System.out.println("Authenticated");
-            return accountRepo.findByUsername(input.getUsername())
-                    .orElseThrow();
+            return accountRepo.findByUsername(input.getUsername())//Return account if authenticated
+                    .map(ResponseEntity::ok)
+                    .orElseThrow(() -> new Exception("User not found"));//Throw exception if not authenticated
         } catch (Exception e) {
             System.out.println("Could not authenticate");
-            return null;
+            throw new IllegalArgumentException("Invalid username/password supplied");
         }
     }
 }

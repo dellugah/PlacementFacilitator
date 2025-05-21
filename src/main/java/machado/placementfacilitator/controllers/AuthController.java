@@ -70,25 +70,39 @@ public class AuthController {
      */
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDTO loginUserDto) {
-        System.out.println(loginUserDto);
-        Account authenticatedUser = authenticationService.authenticate(loginUserDto);
+        try{
+            System.out.println(loginUserDto);
+            Account authenticatedUser = authenticationService.authenticate(loginUserDto).getBody();
 
-        if (authenticatedUser == null) {
+            if (authenticatedUser == null) {
+                return ResponseEntity.badRequest().build();
+            }
+
+            String jwtToken = jwtService.generateToken(authenticatedUser);
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.setToken(jwtToken);
+            loginResponse.setExpiresIn(jwtService.getExpirationTime());
+
+            switch (authenticatedUser.getAccountType().toString()) {
+                case "STUDENT":
+                    loginResponse.setHomePage("/student");
+                    break;
+                case "EMPLOYER":
+                    loginResponse.setHomePage("/employer");
+                    break;
+                case "ADMIN":
+                    loginResponse.setHomePage("/admin-interface");
+                    break;
+                default:
+                    return ResponseEntity.badRequest().build();
+            }
+            return ResponseEntity.ok(loginResponse);
+        }catch (Exception e){
+            System.out.println("Could not authenticate");
+            System.out.println(e.getMessage());
+            System.out.println(ResponseEntity.badRequest().build());
             return ResponseEntity.badRequest().build();
         }
-
-        String jwtToken = jwtService.generateToken(authenticatedUser);
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setToken(jwtToken);
-        loginResponse.setExpiresIn(jwtService.getExpirationTime());
-
-        switch (authenticatedUser.getAccountType().toString()){
-            case "STUDENT": loginResponse.setHomePage("/student"); break;
-            case "EMPLOYER": loginResponse.setHomePage("/employer"); break;
-            case "ADMIN": loginResponse.setHomePage("/admin-interface"); break;
-            default: return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(loginResponse);
     }
 
     @GetMapping("/logout")
