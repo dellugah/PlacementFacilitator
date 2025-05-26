@@ -79,14 +79,12 @@ public class Profile {
     private String email;
     private String linkOne;
     private String linkTwo;
-
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private List<TechnicalSkill> skills;
-
-    private Boolean domestic;
     private byte[] profilePhoto;
 
+    //Employer Restricted
     @OneToMany(fetch = FetchType.EAGER)
     private List<Placement> placements;
     private String companyName;
@@ -95,6 +93,19 @@ public class Profile {
     private String firstName;
     private String lastName;
     private boolean visible = true;
+    private Boolean domestic;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "placement_offers",
+            joinColumns = @JoinColumn(name = "profile_id"),
+            inverseJoinColumns = @JoinColumn(name = "placement_id")
+    )
+    private List<Placement> pendingOffers;
+
+    @OneToOne
+    @JoinColumn(name = "acceptedPlacement_id")
+    private Placement acceptedPlacement;
 
     //files
     private byte[] file;
