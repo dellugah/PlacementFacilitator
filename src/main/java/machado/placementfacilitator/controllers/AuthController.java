@@ -104,9 +104,4 @@ public class AuthController {
             return ResponseEntity.badRequest().build();
         }
     }
-
-    @GetMapping("/logout")
-    public ResponseEntity<Void> logout(){
-        return ResponseEntity.ok().build();
-    }
 }

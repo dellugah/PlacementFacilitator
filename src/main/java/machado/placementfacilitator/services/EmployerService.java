@@ -232,14 +232,9 @@ public class EmployerService {
     public void removeOffer(Long profileId, Long placementId){
         Profile profile = profileRepo.findById(profileId).orElseThrow(()
                 -> new IllegalArgumentException("Profile not found"));
-        Account account = accountRepo.findByProfile(profile).orElseThrow(()
-                -> new IllegalArgumentException("Account not found"));
         Placement placement = placementRepo.findById(placementId).orElseThrow(()
                 -> new IllegalArgumentException("Placement not found"));
 
-        if(account.getAccountType() != Account.AccountType.STUDENT){
-            throw new IllegalStateException("Account is not an employer account");
-        }
         if(!profile.getPendingOffers().contains(placement)){
             throw new IllegalStateException("Profile does not have an offer for this placement");
         }
@@ -247,6 +242,7 @@ public class EmployerService {
             profile.getPendingOffers().remove(placement);
             profileRepo.save(profile);
             log.info("Removed placement offer from profile {}", profileId);
+
         }catch(Exception e){
             log.error("Failed to remove placement offer", e);
             throw new RuntimeException("Failed to remove placement offer", e);

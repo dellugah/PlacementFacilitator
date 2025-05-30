@@ -38,6 +38,7 @@ public class AuthenticationService {
     public Account signup(RegisterUserDTO input) {
         //create an empty profile on the database
         Profile profile = new Profile();
+        profile.setDomestic(input.isDomestic());
         profile = profileRepo.save(profile);
         //set account credentials with passed account info
         //TODO Expand account/profile info on first save

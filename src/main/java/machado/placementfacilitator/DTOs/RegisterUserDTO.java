@@ -12,6 +12,7 @@ public class RegisterUserDTO {
     //Student Restricted;
     private String firstName;
     private String lastName;
+    private boolean domestic;
 
     //Employer Restricted
     private String companyName;

@@ -1,5 +1,7 @@
 package machado.placementfacilitator.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -101,7 +103,9 @@ public class Profile {
             joinColumns = @JoinColumn(name = "profile_id"),
             inverseJoinColumns = @JoinColumn(name = "placement_id")
     )
+    @JsonIgnoreProperties("potentialCandidates")
     private List<Placement> pendingOffers;
+
 
     @OneToOne
     @JoinColumn(name = "acceptedPlacement_id")
