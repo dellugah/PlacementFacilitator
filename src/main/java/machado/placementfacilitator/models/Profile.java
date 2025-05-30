@@ -109,6 +109,7 @@ public class Profile {
 
     @OneToOne
     @JoinColumn(name = "acceptedPlacement_id")
+    @JsonIgnoreProperties("potentialCandidates")
     private Placement acceptedPlacement;
 
     //files
