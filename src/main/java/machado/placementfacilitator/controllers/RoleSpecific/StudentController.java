@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/api/student")
 public class StudentController {
@@ -24,12 +27,22 @@ public class StudentController {
     public ResponseEntity<Profile> acceptPlacement(@RequestBody Long placementId){
         try{
             Profile profile = studentService.acceptPlacement(getAccountProfile(), placementId);
+            log.info("Student {} accepted placement {}",profile.getFirstName(), placementId);
             return ResponseEntity.ok(profile);
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
         }
     }
 
+    @PostMapping("/reject-placement")
+    public ResponseEntity<Profile> rejectPlacement(@RequestBody Long placementId){
+        try{
+            Profile profile = studentService.rejectPlacement(getAccountProfile(), placementId);
+            return ResponseEntity.ok(profile);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
     private Profile getAccountProfile(){
         System.out.println(">>> authenticating");
         Account currentUser;

@@ -107,7 +107,7 @@ public class Profile {
     private List<Placement> pendingOffers;
 
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "acceptedPlacement_id")
     @JsonIgnoreProperties("potentialCandidates")
     private Placement acceptedPlacement;

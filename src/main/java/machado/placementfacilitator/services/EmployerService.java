@@ -2,7 +2,7 @@ package machado.placementfacilitator.services;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import machado.placementfacilitator.DTOs.EmployersDTOs.OfferPlacementDTO;
+
 import machado.placementfacilitator.DTOs.EmployersDTOs.PlacementDTO;
 import machado.placementfacilitator.models.Account;
 import machado.placementfacilitator.models.Placement;
@@ -11,7 +11,6 @@ import machado.placementfacilitator.repos.AccountRepo;
 import machado.placementfacilitator.repos.PlacementRepo;
 import machado.placementfacilitator.repos.ProfileRepo;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -42,15 +41,20 @@ public class EmployerService {
      * @throws IllegalArgumentException if no students found or retrieval fails
      */
     public List<Profile> getAllStudents() {
+        List<Profile> profiles = new java.util.ArrayList<>();
         try {
             List<Account> accountlist = accountRepo.findAllByAccountType(Account.AccountType.STUDENT)
                     .orElse(null);
             if (accountlist == null) {
                 throw new IllegalArgumentException("No students found");
             }
-            return accountlist.stream()
-                    .map(Account::getProfile)
-                    .toList();
+
+            accountlist.forEach(account -> {
+                if(account.getProfile().isVisible()){
+                    profiles.add(account.getProfile());
+                }
+            });
+            return profiles;
 
         } catch (Exception e) {
             throw new IllegalArgumentException("Failed to retrieve all students");
