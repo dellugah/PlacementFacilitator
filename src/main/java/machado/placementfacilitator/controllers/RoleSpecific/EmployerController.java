@@ -14,7 +14,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/employer")
 public class EmployerController {
@@ -82,10 +84,24 @@ public class EmployerController {
 
     @PostMapping("/offer-placement")
     public ResponseEntity<Boolean> sendPlacementOffer(@RequestBody OfferPlacementDTO offer){
+        if(getAccountProfile() == null) return ResponseEntity.badRequest().build();
         try{
             employerService.sendPlacementOffer(offer.getStudentId(), offer.getPlacementId());
             return ResponseEntity.ok(true);
         }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/revoke-student")
+    public ResponseEntity<Profile> revokeStudent(@RequestBody OfferPlacementDTO offer){
+        log.info("Attempting to remove student");
+        try{
+            employerService.removeOffer(offer.getStudentId(), offer.getPlacementId());
+            log.info("Student {} revoked placement offer {}", offer.getStudentId(), offer.getPlacementId());
+            return ResponseEntity.ok(getAccountProfile());
+        }catch (Exception e){
+            log.error("Error revoking placement offer {} for student {}", offer.getPlacementId(), offer.getStudentId());
             return ResponseEntity.badRequest().build();
         }
     }

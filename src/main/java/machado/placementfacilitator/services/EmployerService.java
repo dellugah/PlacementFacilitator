@@ -190,7 +190,6 @@ public class EmployerService {
                 placementRepo.deletePotentialCandidatesRelationships(p.getPlacementId());
                 placementRepo.deleteProfilePlacementsRelationships(p.getPlacementId());
                 placementRepo.deleteById(p.getPlacementId());
-                log.debug("Successfully deleted placement {}", placement.getPositionName());
                 return;
             }
             log.debug("Placement {} not found", placement.getPositionName());
@@ -213,12 +212,10 @@ public class EmployerService {
                     -> new IllegalArgumentException("Placement not found"));
 
         if (account.getAccountType() != Account.AccountType.STUDENT) {
-            log.error("Account {} is not a student account", account.getAccountId());
             throw new IllegalStateException("Account is not a student account");
         }
 
         if (profile.getPendingOffers().contains(placement)) {
-            log.error("Profile {} already has an offer for placement {}", profileId, placementId);
             throw new IllegalStateException("Profile already has an offer for this placement");
         }
 
@@ -234,21 +231,18 @@ public class EmployerService {
     }
 
     public void removeOffer(Long profileId, Long placementId){
+
         Profile profile = profileRepo.findById(profileId).orElseThrow(()
                 -> new IllegalArgumentException("Profile not found"));
+
         Placement placement = placementRepo.findById(placementId).orElseThrow(()
                 -> new IllegalArgumentException("Placement not found"));
 
-        if(!profile.getPendingOffers().contains(placement)){
-            throw new IllegalStateException("Profile does not have an offer for this placement");
-        }
+        if(!placement.getPotentialCandidates().contains(profile))
+            throw new IllegalArgumentException("placement does not contain specified student");
         try{
-            profile.getPendingOffers().remove(placement);
-            profileRepo.save(profile);
-            log.info("Removed placement offer from profile {}", profileId);
-
+            placement.getPotentialCandidates().remove(profile);
         }catch(Exception e){
-            log.error("Failed to remove placement offer", e);
             throw new RuntimeException("Failed to remove placement offer", e);
         }
 
