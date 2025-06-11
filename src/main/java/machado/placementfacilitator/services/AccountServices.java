@@ -39,46 +39,52 @@ public class AccountServices {
     public Profile editProfile(Profile profileToBeEdited, EditProfileDTO editedProfile){
 
         try{
-            if(!Objects.equals(profileToBeEdited.getFirstName(), editedProfile.getFirstName()) && !editedProfile.getFirstName().isBlank()) {
+            if(!Objects.equals(profileToBeEdited.getFirstName(), editedProfile.getFirstName())
+                    && !editedProfile.getFirstName().isBlank()) {
                 profileToBeEdited.setFirstName(editedProfile.getFirstName());
-                System.out.println("First name edited");
             }
-            if(!Objects.equals(profileToBeEdited.getLastName(), editedProfile.getLastName()) && !editedProfile.getLastName().isBlank()){
+
+            if(!Objects.equals(profileToBeEdited.getLastName(), editedProfile.getLastName())
+                    && !editedProfile.getLastName().isBlank()){
                 profileToBeEdited.setLastName(editedProfile.getLastName());
-                System.out.println("Last name edited");
             }
+
             //TODO decide if email is editable
 //            if(!Objects.equals(profileToBeEdited.getEmail(), editedProfile.getEmail())){
 //                profileToBeEdited.setEmail(editedProfile.getEmail());
 //                System.out.println("Email edited");
 //            }
-            if(!Objects.equals(profileToBeEdited.getCompanyName(), editedProfile.getCompanyName()) && !editedProfile.getCompanyName().isBlank()){
+            if(!Objects.equals(profileToBeEdited.getCompanyName(), editedProfile.getCompanyName())
+                    && !editedProfile.getCompanyName().isBlank()){
                 profileToBeEdited.setCompanyName(editedProfile.getCompanyName());
-                System.out.println("Company name edited");
             }
-            if(!Objects.equals(profileToBeEdited.getLinkOne(), editedProfile.getLinkOne()) && !editedProfile.getLinkOne().isBlank()){
+
+            if(!Objects.equals(profileToBeEdited.getLinkOne(), editedProfile.getLinkOne())
+                    && !editedProfile.getLinkOne().isBlank()){
                 profileToBeEdited.setLinkOne(editedProfile.getLinkOne());
-                System.out.println("Link one edited");
             }
-            if(!Objects.equals(profileToBeEdited.getLinkTwo(), editedProfile.getLinkTwo()) && !editedProfile.getLinkTwo().isBlank()){
+
+            if(!Objects.equals(profileToBeEdited.getLinkTwo(), editedProfile.getLinkTwo())
+                    && !editedProfile.getLinkTwo().isBlank()){
                 profileToBeEdited.setLinkTwo(editedProfile.getLinkTwo());
-                System.out.println("Link two edited");
             }
             //TODO implement file logic
 //            if(!Arrays.equals(profileToBeEdited.getProfilePhoto(), editedProfile.getProfilePhoto())){
 //                profileToBeEdited.setProfilePhoto(editedProfile.getProfilePhoto());
 //                System.out.println("Profile photo edited");
 //            }
-            if(!Objects.equals(profileToBeEdited.getBio(), editedProfile.getBio()) && !editedProfile.getBio().isBlank()){
+            if(!Objects.equals(profileToBeEdited.getBio(), editedProfile.getBio())
+                    && !editedProfile.getBio().isBlank()){
                 profileToBeEdited.setBio(editedProfile.getBio());
-                System.out.println("Bio edited");
             }
-            if(!Objects.equals(profileToBeEdited.getSkills(), editedProfile.getSkills())){
+
+            if(!Objects.equals(profileToBeEdited.getSkills(), editedProfile.getSkills())
+                    && !editedProfile.getSkills().isEmpty()){
+                profileToBeEdited.getSkills().clear();
                 editedProfile.getSkills().forEach(skill -> {
                     profileToBeEdited.getSkills().add(skill);
                 });
             }
-            System.out.println("Profile edited");
             return profileRepo.save(profileToBeEdited);
         }catch (Exception e){
             throw new IllegalArgumentException("Failed to edit profile");
